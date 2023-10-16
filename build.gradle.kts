@@ -7,15 +7,38 @@ plugins {
 group = "de.tomjuri"
 version = "3.3.0"
 
-val lwjgl: Configuration by configurations.creating
-
 repositories {
     mavenCentral()
+    maven("https://libraries.minecraft.net")
+    maven("https://maven.minecraftforge.net")
+}
+
+val embed: Configuration by configurations.creating
+configurations.implementation.get().extendsFrom(embed)
+
+dependencies {
+    embed("org.lwjgl:lwjgl:3.3.0")
+    embed("org.lwjgl:lwjgl-tinyfd:3.3.0")
+    embed("org.lwjgl:lwjgl-nanovg:3.3.0")
+    embed("org.lwjgl:lwjgl:3.3.0:natives-windows")
+    embed("org.lwjgl:lwjgl-tinyfd:3.3.0:natives-windows")
+    embed("org.lwjgl:lwjgl-nanovg:3.3.0:natives-windows")
+    embed("org.lwjgl:lwjgl:3.3.0:natives-linux")
+    embed("org.lwjgl:lwjgl-tinyfd:3.3.0:natives-linux")
+    embed("org.lwjgl:lwjgl-nanovg:3.3.0:natives-linux")
+    embed("org.lwjgl:lwjgl:3.3.0:natives-macos")
+    embed("org.lwjgl:lwjgl-tinyfd:3.3.0:natives-macos")
+    embed("org.lwjgl:lwjgl-nanovg:3.3.0:natives-macos")
+    implementation("org.ow2.asm:asm:9.5")
+    implementation("org.ow2.asm:asm-tree:9.5")
+    implementation("net.minecraft:launchwrapper:1.12") { isTransitive = false }
+    implementation("org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209") { isTransitive = false }
+    implementation("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9:universal")
 }
 
 tasks.shadowJar {
     archiveClassifier.set("")
-    configurations = listOf(lwjgl)
+    configurations = listOf(embed)
     excludes.addAll(listOf(
         "META-INF/versions/**",
         "**/module-info.class",
@@ -25,21 +48,6 @@ tasks.shadowJar {
         include("org.lwjgl.PointerBuffer")
         include("org.lwjgl.BufferUtils")
     }
-}
-
-dependencies {
-    lwjgl("org.lwjgl:lwjgl:3.3.0")
-    lwjgl("org.lwjgl:lwjgl-tinyfd:3.3.0")
-    lwjgl("org.lwjgl:lwjgl-nanovg:3.3.0")
-    lwjgl("org.lwjgl:lwjgl:3.3.0:natives-windows")
-    lwjgl("org.lwjgl:lwjgl-tinyfd:3.3.0:natives-windows")
-    lwjgl("org.lwjgl:lwjgl-nanovg:3.3.0:natives-windows")
-    lwjgl("org.lwjgl:lwjgl:3.3.0:natives-linux")
-    lwjgl("org.lwjgl:lwjgl-tinyfd:3.3.0:natives-linux")
-    lwjgl("org.lwjgl:lwjgl-nanovg:3.3.0:natives-linux")
-    lwjgl("org.lwjgl:lwjgl:3.3.0:natives-macos")
-    lwjgl("org.lwjgl:lwjgl-tinyfd:3.3.0:natives-macos")
-    lwjgl("org.lwjgl:lwjgl-nanovg:3.3.0:natives-macos")
 }
 
 publishing {
